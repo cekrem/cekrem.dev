@@ -3,26 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>cekrem.dev – Christian Ekrem</title>
+
+    <title>Christian Ekrem – cekrem.dev</title>
+    <meta property="og:title" content="Christian Ekrem – cekrem.dev" />
+
+    <meta
+      name="description"
+      content="Señor consultant && co-owner @ Ensō. Author of An Elm Primer for React Developers."
+      \
+    />
+    <meta
+      property="og:description"
+      content="Señor consultant && co-owner @ Ensō. Author of An Elm Primer for React Developers."
+    />
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.png" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+
     <style>
-      body {
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        height: 100%;
+        background: white;
+        color: black;
         font-family: monospace;
         font-size: 133.7%;
+      }
+      body {
         display: grid;
-        min-height: 100vh;
+        min-height: 100%;
         place-items: center;
-        box-sizing: border-box;
-        padding: 10%;
-        margin: 0;
+        padding: 2rem;
       }
       a {
         color: #5cee9a !important;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      @media (prefers-color-scheme: dark) {
+        html {
+          filter: invert(1);
+        }
+        html a {
+          filter: invert(1);
+        }
       }
     </style>
   </head>
   <body>
     <main>
       <h1>Christian Ekrem</h1>
+      <hr />
       <ul>
         <li>Follower of Jesus(!)</li>
         <li>
@@ -35,7 +73,7 @@
           >
         </li>
         <li>
-          Essays on functional programming && coding as craft @
+          Essays on functional programming \<br />&& coding as craft @
           <a href="https://cekrem.github.io">cekrem.github.io</a>
         </li>
       </ul>
