@@ -5313,8 +5313,19 @@ var $author$project$Main$subscriptions = function (model) {
 		return $elm$browser$Browser$Events$onAnimationFrameDelta($author$project$Main$Fork);
 	}
 };
-var $author$project$Main$Forkbombing = function (a) {
-	return {$: 1, a: a};
+var $author$project$Main$Forkbombing = F2(
+	function (a, b) {
+		return {$: 1, a: a, b: b};
+	});
+var $elm$core$Process$sleep = _Process_sleep;
+var $author$project$Main$sendDelayedMsg = function (msg) {
+	return A2(
+		$elm$core$Task$perform,
+		$elm$core$Basics$identity,
+		A2(
+			$elm$core$Task$map,
+			$elm$core$Basics$always(msg),
+			$elm$core$Process$sleep(1000)));
 };
 var $elm$core$List$takeReverse = F3(
 	function (n, list, kept) {
@@ -5450,25 +5461,31 @@ var $author$project$Main$update = F2(
 				var _v1 = _v0.a;
 				var _v2 = _v0.b;
 				return _Utils_Tuple2(
-					$author$project$Main$Forkbombing(_List_Nil),
+					A2($author$project$Main$Forkbombing, 0, _List_Nil),
 					$elm$core$Platform$Cmd$none);
 			} else {
-				var _v3 = _v0.a;
+				var _v4 = _v0.a;
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			}
 		} else {
 			if (_v0.b.$ === 1) {
-				var prev = _v0.a.a;
+				var _v3 = _v0.a;
+				var count = _v3.a;
+				var prev = _v3.b;
 				var f = _v0.b.a;
 				return _Utils_Tuple2(
-					$author$project$Main$Forkbombing(
+					A2(
+						$author$project$Main$Forkbombing,
+						count + 1,
 						A2(
 							$elm$core$List$cons,
 							f,
 							A2($elm$core$List$take, 128, prev))),
-					$elm$core$Platform$Cmd$none);
+					$author$project$Main$sendDelayedMsg(
+						$author$project$Main$Fork(f + 1)));
 			} else {
-				var _v4 = _v0.b;
+				var _v5 = _v0.a;
+				var _v6 = _v0.b;
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
 			}
 		}
@@ -5499,29 +5516,31 @@ var $elm$virtual_dom$VirtualDom$text = _VirtualDom_text;
 var $elm$html$Html$text = $elm$virtual_dom$VirtualDom$text;
 var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$html$Html$span = _VirtualDom_node('span');
-var $author$project$Main$viewFork = function (f) {
-	return A2(
-		$elm$html$Html$span,
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$Attributes$style,
-				'margin',
-				$elm$core$String$fromFloat(f) + 'rem'),
-				A2(
-				$elm$html$Html$Attributes$style,
-				'font-size',
-				$elm$core$String$fromFloat(f) + 'px'),
-				A2(
-				$elm$html$Html$Attributes$style,
-				'opacity',
-				$elm$core$String$fromFloat(f / 10))
-			]),
-		_List_fromArray(
-			[
-				$elm$html$Html$text('()')
-			]));
-};
+var $author$project$Main$viewFork = F2(
+	function (count, f) {
+		return A2(
+			$elm$html$Html$span,
+			_List_fromArray(
+				[
+					A2(
+					$elm$html$Html$Attributes$style,
+					'margin',
+					$elm$core$String$fromFloat(f) + 'rem'),
+					A2(
+					$elm$html$Html$Attributes$style,
+					'font-size',
+					$elm$core$String$fromFloat(f) + 'px'),
+					A2(
+					$elm$html$Html$Attributes$style,
+					'opacity',
+					$elm$core$String$fromFloat(f / 10))
+				]),
+			_List_fromArray(
+				[
+					$elm$html$Html$text(
+					'() -> ' + $elm$core$String$fromInt(count))
+				]));
+	});
 var $author$project$Main$view = function (model) {
 	if (!model.$) {
 		return A2(
@@ -5539,7 +5558,8 @@ var $author$project$Main$view = function (model) {
 					$elm$html$Html$text(':(){ :|:& };:')
 				]));
 	} else {
-		var entries = model.a;
+		var count = model.a;
+		var entries = model.b;
 		return A2(
 			$elm$html$Html$div,
 			_List_fromArray(
@@ -5548,7 +5568,10 @@ var $author$project$Main$view = function (model) {
 					A2($elm$html$Html$Attributes$style, 'z-index', '-1'),
 					A2($elm$html$Html$Attributes$style, 'pointer-events', 'none')
 				]),
-			A2($elm$core$List$map, $author$project$Main$viewFork, entries));
+			A2(
+				$elm$core$List$map,
+				$author$project$Main$viewFork(count),
+				entries));
 	}
 };
 var $author$project$Main$main = $elm$browser$Browser$element(

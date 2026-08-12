@@ -5,6 +5,8 @@ import Browser.Events
 import Html exposing (Html)
 import Html.Attributes as Attr
 import Html.Events as Events
+import Process
+import Task
 
 
 main : Program () Model Msg
@@ -19,7 +21,7 @@ main =
 
 type Model
     = Idle
-    | Forkbombing (List Float)
+    | Forkbombing Int (List Float)
 
 
 init : ( Model, Cmd msg )
@@ -36,15 +38,15 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case ( model, msg ) of
         ( Idle, Explode ) ->
-            ( Forkbombing [], Cmd.none )
+            ( Forkbombing 0 [], Cmd.none )
 
-        ( Forkbombing prev, Fork f ) ->
-            ( Forkbombing (f :: (prev |> List.take 128)), Cmd.none )
+        ( Forkbombing count prev, Fork f ) ->
+            ( Forkbombing (count + 1) (f :: (prev |> List.take 128)), sendDelayedMsg (Fork <| f + 1) )
 
         ( Idle, Fork _ ) ->
             ( model, Cmd.none )
 
-        ( Forkbombing _, Explode ) ->
+        ( Forkbombing _ _, Explode ) ->
             ( model, Cmd.none )
 
 
@@ -54,7 +56,7 @@ subscriptions model =
         Idle ->
             Sub.none
 
-        Forkbombing _ ->
+        Forkbombing _ _ ->
             Browser.Events.onAnimationFrameDelta Fork
 
 
@@ -71,22 +73,29 @@ view model =
                 ]
                 [ Html.text ":(){ :|:& };:" ]
 
-        Forkbombing entries ->
+        Forkbombing count entries ->
             Html.div
                 [ Attr.style "position" "fixed"
                 , Attr.style "z-index" "-1"
                 , Attr.style "pointer-events" "none"
                 ]
                 (entries
-                    |> List.map viewFork
+                    |> List.map (viewFork count)
                 )
 
 
-viewFork : Float -> Html msg
-viewFork f =
+sendDelayedMsg : msg -> Cmd msg
+sendDelayedMsg msg =
+    Process.sleep 1000
+        |> Task.map (always msg)
+        |> Task.perform identity
+
+
+viewFork : Int -> Float -> Html msg
+viewFork count f =
     Html.span
         [ Attr.style "margin" (String.fromFloat f ++ "rem")
         , Attr.style "font-size" (String.fromFloat f ++ "px")
         , Attr.style "opacity" (String.fromFloat (f / 10))
         ]
-        [ Html.text "()" ]
+        [ Html.text <| "() -> " ++ String.fromInt count ]
