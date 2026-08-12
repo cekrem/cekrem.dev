@@ -47,6 +47,9 @@
       a:hover {
         text-decoration: underline;
       }
+      aside {
+        height: 10rem;
+      }
       @media (prefers-color-scheme: dark) {
         html {
           filter: invert(1);
@@ -58,6 +61,7 @@
     </style>
   </head>
   <body>
+    <aside id="forkbomb"></aside>
     <main>
       <h1>Christian Ekrem</h1>
       <hr />
@@ -87,5 +91,12 @@
         <a href="https://cekrem.github.io">blog</a>
       </p>
     </footer>
+
+    <script src="forkbomb.js"></script>
+    <script>
+      Elm.Main.init({
+        node: document.getElementById("forkbomb"),
+      });
+    </script>
   </body>
 </html>
