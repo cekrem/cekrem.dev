@@ -98,4 +98,22 @@ viewFork count f =
         , Attr.style "font-size" (String.fromFloat f ++ "px")
         , Attr.style "opacity" (String.fromFloat (f / 10))
         ]
-        [ Html.text <| "() -> " ++ String.fromInt count ]
+        [ Html.text <| "() -> " ++ toBinaryString count ]
+
+
+toBinaryString : Int -> String
+toBinaryString n =
+    if n == 0 then
+        "0"
+
+    else
+        toBinaryStringHelp n ""
+
+
+toBinaryStringHelp : Int -> String -> String
+toBinaryStringHelp n acc =
+    if n == 0 then
+        acc
+
+    else
+        toBinaryStringHelp (n // 2) (String.fromInt (modBy 2 n) ++ acc)
