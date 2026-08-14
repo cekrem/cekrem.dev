@@ -10,7 +10,6 @@
     <meta
       name="description"
       content="Señor consultant && co-owner @ Ensō. Author of An Elm Primer for React Developers."
-      \
     />
     <meta
       property="og:description"
@@ -40,6 +39,7 @@
         min-height: 100%;
         place-items: center;
         padding: 2rem;
+        animation: fadeIn 0.2s ease-in;
       }
       hr {
         margin-bottom: 1rem;
@@ -62,18 +62,25 @@
           filter: invert(1);
         }
       }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
     </style>
   </head>
   <body>
     <aside id="forkbomb"></aside>
     <main>
-      <h1>
-        Christian Ekrem
-        <span
-          title="No idea how you'd pronounce that, btw. It started a loooong time as the first name I gave my character in Zelda: A link to the past, because my full name wouldn't fit. Well, technically the first name I used was \"Zelda\", because I hadn't yet understood that it was the name of the princess you're saving..."
-          >(cekrem)</span
-        >
-      </h1>
+      <h1>Christian Ekrem</h1>
+      <span
+        title="No idea how you'd pronounce that, btw. It started a loooong time as the first name I gave my character in Zelda: A link to the past, because my full name wouldn't fit. Well, technically the first name I used was"
+      >
+        – cekrem</span
+      >
       <hr />
       <ul>
         <li>Follower of Jesus(!)</li>
